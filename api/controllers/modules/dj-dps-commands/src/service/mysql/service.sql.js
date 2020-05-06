@@ -1,5 +1,9 @@
 // get the client
 const mysql = require('mysql2');
+const moment = require("moment");
+const _ = require("lodash");
+
+
 // create the connection
 const connectionUrl =
     process.env.JAWSDB_URL ||
@@ -69,11 +73,32 @@ module.exports = {
             let res = []
 
 
+            let formatValue = (value, type) => {
+                
+                let dataTypeFormat = {
+                    10: "YYYY-MM-DD",
+                    12: "YYYY-MM-DD HH:mm:ss",
+                    11: "HH:mm:ss",
+                    7: "",
+                    13: "YYYY"
+                }
+
+                if( dataTypeFormat[type]){
+                    let d = (type == 11) 
+                        ? new moment(value.toString(), "HH:mm:ss") 
+                        : (type == 13)
+                            ? new moment(value.toString(), "YYYY")
+                            : moment(value.toString()) 
+                    return d.format(dataTypeFormat[type])
+                } 
+                return value.toString()    
+            }
+
             Promise.all(
 
                 command.settings.query.map((q, index) =>
 
-                    connection.promise().query(q)
+                    connection.promise().query({sql:q, nestTables:"."})
                       .then(([results, fields]) => {
                           if (!_.isArray(results)) {
                               res.push({
@@ -84,10 +109,11 @@ module.exports = {
                               var table = new Table();
                               table.push(fields.map(f => f.name))
                               results.forEach(row => {
-                                  table.push(_.values(row).map(v => v.toString()))
+                                table.push(_.values(row).map( ( v, index ) => formatValue(v, fields[index].columnType)))
                               })
                               res.push({
                                   query: q,
+                                  fields: fields.map( f => ({name:f.name, columnType:f.columnType})),
                                   data: results,
                                   text: table.toString().replace(/\u001b\[90m/g,"").replace(/\u001b\[39m/g, "") + "\n"
                               })
