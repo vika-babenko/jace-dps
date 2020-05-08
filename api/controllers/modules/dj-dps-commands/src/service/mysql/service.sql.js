@@ -87,11 +87,11 @@ module.exports = {
                     let d = (type == 11) 
                         ? new moment(value.toString(), "HH:mm:ss") 
                         : (type == 13)
-                            ? new moment(value.toString(), "YYYY")
+                            ? new moment(value.toString()+"01-01", "YYYY-MM-DD")
                             : moment(value.toString()) 
                     return d.format(dataTypeFormat[type])
                 } 
-                return value.toString()    
+                return (value) ? value.toString() : "null"    
             }
 
             Promise.all(
@@ -120,6 +120,8 @@ module.exports = {
                           }
                       })
                     .catch(err => {
+
+                        console.log("CATCH", err)    
                         reject(new SqlImplError(`
 SQL Error ${err.errno}: ${err.sqlMessage}
 ${(command.settings.query[index-1]) ? command.settings.query[index-1] : ""}
