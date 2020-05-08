@@ -1,13 +1,23 @@
 // get the client
+
 const mysql = require('mysql2');
 const moment = require("moment");
 const _ = require("lodash");
 
 
-// create the connection
+// create the connection pool
 const connectionUrl =
     process.env.JAWSDB_URL ||
     'mysql://root:boldak@localhost:3306/x4mspp0ssyvlauv8'
+
+const pool = mysql.createPool({
+  uri:connectionUrl,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
+
+
 
 class SqlImplError extends Error {
     constructor(message) {
@@ -17,8 +27,30 @@ class SqlImplError extends Error {
 }
 
 
-const lineCommentRE = /(-- [\w\S\ .\t\:\,;\'\"\(\)\{\}\[\]0-9-_]*)(?:[\n\r]*)/gi;
-const inlineCommentRE = /(\/\*[\w\W\b\.\t\:\,;\'\"\(\)\{\}\[\]\*0-9-_]*)(?:\*\/)/gim;
+
+let Table = require('cli-table3')
+
+
+let formatValue = (value, type) => {
+    
+    let dataTypeFormat = {
+        10: "YYYY-MM-DD",
+        12: "YYYY-MM-DD HH:mm:ss",
+        11: "HH:mm:ss",
+        7: "",
+        13: "YYYY"
+    }
+
+    if( dataTypeFormat[type]){
+        let d = (type == 11) 
+            ? (value) ? new moment(value.toString(), "HH:mm:ss") : "null"
+            : (type == 13)
+                ? (value) ? new moment(value.toString()+"01-01", "YYYY-MM-DD") : "null"
+                : (value) ? moment(new Date(value)) : "null" 
+        return (d.format) ? d.format(dataTypeFormat[type]) : d
+    } 
+    return (value) ? value.toString() : "null"
+}
 
 
 module.exports = {
@@ -49,104 +81,54 @@ module.exports = {
         if (!command.settings.query) {
             throw new SqlImplError("no query available")
         }
-
+        let connection    
         return new Promise((resolve, reject) => {
-            const connection = mysql.createConnection(connectionUrl)
-            command.settings.query = command.settings.query.replace(lineCommentRE,"").replace(inlineCommentRE,"")
-            // console.log(command.settings.query)
-            command.settings.query = command.settings.query.split(";").map(q => q.trim()).filter(q => q)
-            
-            let p = command.settings.query.map( q => {
-                let statement = q.split(/\s/)[0].toUpperCase()
-                // console.log(statement, " ", command.settings.permission.join(", "),)
-                if(!_.find(command.settings.permission, p => p == statement))
-                return new SqlImplError(`No permission for execute ${statement} \n ${q}\n`)
-            }).filter( p => p)
-
-            if(p.length>0){
-                reject(p[0])
-                return
-            }
-
-
-            let Table = require('cli-table3')
-            let res = []
-
-
-            let formatValue = (value, type) => {
-                
-                let dataTypeFormat = {
-                    10: "YYYY-MM-DD",
-                    12: "YYYY-MM-DD HH:mm:ss",
-                    11: "HH:mm:ss",
-                    7: "",
-                    13: "YYYY"
-                }
-
-                if( dataTypeFormat[type]){
-                    let d = (type == 11) 
-                        ? new moment(value.toString(), "HH:mm:ss") 
-                        : (type == 13)
-                            ? new moment(value.toString()+"01-01", "YYYY-MM-DD")
-                            : moment(value.toString()) 
-                    return d.format(dataTypeFormat[type])
-                } 
-                return (value) ? value.toString() : "null"    
-            }
-
-            Promise.all(
-
-                command.settings.query.map((q, index) =>
-
-                    connection.promise().query({sql:q, nestTables:"."})
-                      .then(([results, fields]) => {
-                          if (!_.isArray(results)) {
-                              res.push({
-                                  query: q,
-                                  text: _.keys(results).map(k => `${k}: ${JSON.stringify(results[k])}`).join(", ") + "\n"
-                              })
-                          } else {
-                              var table = new Table();
-                              table.push(fields.map(f => f.name))
-                              results.forEach(row => {
-                                table.push(_.values(row).map( ( v, index ) => formatValue(v, fields[index].columnType)))
-                              })
-                              res.push({
-                                  query: q,
-                                  fields: fields.map( f => ({name:f.name, columnType:f.columnType})),
-                                  data: results,
-                                  text: table.toString().replace(/\u001b\[90m/g,"").replace(/\u001b\[39m/g, "") + "\n"
-                              })
+            pool.promise().getConnection()
+                .then(c  => {
+                    connection = c
+                    return connection.query({sql:command.settings.query, nestTables:"."})
+                })
+                .then(([results, fields]) => {
+                    connection.release()
+                      if (!_.isArray(results)) {
+                      
+                          return {
+                              query: command.settings.query,
+                              text: _.keys(results).map(k => `${k}: ${JSON.stringify(results[k])}`).join(", ") + "\n"
                           }
-                      })
-                    .catch(err => {
+                      
+                      } else {
+                        var table = new Table();
+                            table.push(fields.map(f => f.name))
+                            results.forEach(row => {
+                            table.push(_.values(row).map( ( v, index ) => formatValue(v, fields[index].columnType)))
+                        })
+                        
+                        return {
+                              query: command.settings.query,
+                              fields: fields.map( f => ({name:f.name, columnType:f.columnType})),
+                              data: results,
+                              text: table.toString().replace(/\u001b\[90m/g,"").replace(/\u001b\[39m/g, "") + "\n"
+                        }
+                      }
+                })
+                .then(res => {
+                    state.head = {
+                        type: "json",
+                        data: res
+                    }
+                    resolve(state)
+                })
+                .catch(err => {
+                    connection.release()
+                    reject(new SqlImplError(
+                       (err.errno) ? `SQL Error ${err.errno}: ${err.sqlMessage}\n${command.settings.query}` : err.toString()
+                    ))
+                })
+                        
+            })
+        },
 
-                        console.log("CATCH", err)    
-                        reject(new SqlImplError(`
-SQL Error ${err.errno}: ${err.sqlMessage}
-${(command.settings.query[index-1]) ? command.settings.query[index-1] : ""}
-----------------------------------------------
-${q}
-----------------------------------------------
-${(command.settings.query[index-1]) ? command.settings.query[index-1] : ""}
-        
-              `))})))
-            .then(() => {
-                // console.log(res.map(r => r.query+"\n"+r.text).join("\n"))
-                connection.end()
-                state.head = {
-                    type: "json",
-                    data: res
-                }
-                resolve(state)
-            })
-            .catch(e => {
-                console.log(e)
-                connection.end()
-                // reject(e)
-            })
-        })
-    },
 
     help: {
         synopsis: "Tokenize document",
