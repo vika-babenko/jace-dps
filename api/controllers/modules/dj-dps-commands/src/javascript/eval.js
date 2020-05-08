@@ -23,6 +23,8 @@ var implementation = function(state, config){
 
                 sandbox._ = _;
                 sandbox.moment = moment
+                sandbox.Buffer = Buffer
+
 
                 sandbox._util = {
 

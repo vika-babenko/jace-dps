@@ -25,14 +25,57 @@ module.exports = {
     execute: function(command, state, config) {
 
         command.settings.source = command.settings.source || ((command.settings.data) ? command.settings.data : state.head.data)
-        
+        command.settings.options = command.settings.options || {}
+
         if (!command.settings.source) {
             throw new SqlImplError("no query available")
         }
 
         return new Promise((resolve, reject) => {
             try {
-              let html = marky(command.settings.source, {highlightSyntax:true})
+                let options = {
+                  sanitize: true,
+                  nofollow: true,
+                  linkify: true,
+                  highlightSyntax: true,
+                  prefixHeadingIds: true,
+                  enableHeadingLinkIcons: false,
+                  serveImagesWithCDN: true,
+                  debug: true,
+                  package: null, 
+                  // {
+                  //   repo:"https://github.com/javascript-tutorial/ru.javascript.info",
+                  //   // resourceBase:"1-js/04-object-basics/02-garbage-collection"
+                  // },
+                  headingAnchorClass: 'anchor',
+                  headingSvgClass: ['octicon', 'octicon-link']
+                }
+
+                options = _.extend(options, command.settings.options)
+
+              let parser = marky.getParser(options)
+                
+                parser
+                    .use(require("./plugins/github-image-url"), {package: options.package})  
+                    // .use(require("./plugins/markit/plugins/outlinedBlocks"))  
+                
+                let html = parser.render(command.settings.source)    
+              // let html = marky(command.settings.source, {
+              //     sanitize: true,
+              //     nofollow: true,
+              //     linkify: true,
+              //     highlightSyntax: true,
+              //     prefixHeadingIds: true,
+              //     enableHeadingLinkIcons: true,
+              //     serveImagesWithCDN: true,
+              //     debug: true,
+              //     package: {
+              //       repo:"https://github.com/javascript-tutorial/ru.javascript.info",
+              //       resourceBase:"1-js/04-object-basics/02-garbage-collection"
+              //     },
+              //     headingAnchorClass: 'anchor',
+              //     headingSvgClass: ['octicon', 'octicon-link']
+              //   })
               state.head = {
                   type: "html",
                   data: html
