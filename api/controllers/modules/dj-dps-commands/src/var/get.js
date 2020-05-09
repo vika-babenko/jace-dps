@@ -69,6 +69,7 @@ module.exports = {
             
             let getValue = path => {
                 let res = _.get(state.storage, command.settings.path);
+                // if(!res) return null
                 if( util.isArray(res)) return res.map(d => d)
                 if( util.isString(res)) return res
                 if( util.isObject(res)) return _.defaultsDeep( {} , res )
@@ -99,6 +100,7 @@ module.exports = {
                 data: getValue(command.settings.path),
                 type: command.settings.as || "json"
             }
+
             if (util.isFunction(state.head.data)) state.head.type = 'function'
                 // }
             return state

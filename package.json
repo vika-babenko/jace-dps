@@ -46,6 +46,7 @@
     "jsbayes": "^0.1.0",
     "json2csv": "^3.7.2",
     "jsonpath": "^0.2.9",
+    "language-cypher": "git+https://github.com/tobiashm/language-cypher.git",
     "lodash-node": "^3.10.2",
     "markdown-it-container": "^2.0.0",
     "markdown-it-fence": "^0.1.3",

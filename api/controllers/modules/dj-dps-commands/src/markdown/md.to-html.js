@@ -1,4 +1,4 @@
-let marky = require( "marky-markdown")
+let marky = require( "./render")
 
 
 class MdImplError extends Error {
@@ -26,9 +26,10 @@ module.exports = {
 
         command.settings.source = command.settings.source || ((command.settings.data) ? command.settings.data : state.head.data)
         command.settings.options = command.settings.options || {}
+        // console.log(command.settings.options)
 
         if (!command.settings.source) {
-            throw new SqlImplError("no query available")
+            throw new MdImplError("no data available")
         }
 
         return new Promise((resolve, reject) => {
@@ -55,8 +56,8 @@ module.exports = {
 
               let parser = marky.getParser(options)
                 
-                parser
-                    .use(require("./plugins/github-image-url"), {package: options.package})  
+                // parser
+                    // .use(require("./plugins/github-image-url"), {package: options.package})  
                     // .use(require("./plugins/markit/plugins/outlinedBlocks"))  
                 
                 let html = parser.render(command.settings.source)    

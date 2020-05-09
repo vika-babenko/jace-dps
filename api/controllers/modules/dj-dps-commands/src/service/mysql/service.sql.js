@@ -1,7 +1,5 @@
-// get the client
 
 const mysql = require('mysql2');
-const moment = require("moment");
 const _ = require("lodash");
 
 
@@ -31,26 +29,11 @@ class SqlImplError extends Error {
 let Table = require('cli-table3')
 
 
-let formatValue = (value, type) => {
-    
-    let dataTypeFormat = {
-        10: "YYYY-MM-DD",
-        12: "YYYY-MM-DD HH:mm:ss",
-        11: "HH:mm:ss",
-        7: "",
-        13: "YYYY"
-    }
+let formatValue = require("./format-value") 
 
-    if( dataTypeFormat[type]){
-        let d = (type == 11) 
-            ? (value) ? new moment(value.toString(), "HH:mm:ss") : "null"
-            : (type == 13)
-                ? (value) ? new moment(value.toString()+"01-01", "YYYY-MM-DD") : "null"
-                : (value) ? moment(new Date(value)) : "null" 
-        return (d.format) ? d.format(dataTypeFormat[type]) : d
-    } 
-    return (value) ? value.toString() : "null"
-}
+const lineCommentRE = /(-- [\w\S\ .\t\:\,;\'\"\(\)\{\}\[\]0-9-_]*)(?:[\n\r]*)/gi;
+const inlineCommentRE = /(\/\*[\w\W\b\.\t\:\,;\'\"\(\)\{\}\[\]\*0-9-_]*)(?:\*\/)/gim;
+
 
 
 module.exports = {
@@ -74,19 +57,29 @@ module.exports = {
     },
 
     execute: function(command, state, config) {
-
-        command.settings.query = command.settings.query || ((command.settings.data) ? command.settings.data : state.head.data)
+        
+        let query = command.settings.query || ((command.settings.data) ? command.settings.data : state.head.data)
+        
         command.settings.permission = command.settings.permission || [] 
         command.settings.permission = command.settings.permission.map( p => p.toUpperCase())
-        if (!command.settings.query) {
-            throw new SqlImplError("no query available")
-        }
+        
+        if (!query) throw new SqlImplError(`No SQL query available`)
+        
+        query = query.replace(lineCommentRE,"").replace(inlineCommentRE,"").trim()
+        
+        
+        if (!query) throw new SqlImplError(`No SQL query available in\n ${command.settings.query || ((command.settings.data) ? command.settings.data : state.head.data)}\n`)
+        
+
+        let statement = query.split(/\s/)[0].toUpperCase()
+        if(!_.find(command.settings.permission, p => p == statement)) throw new SqlImplError(`No permission for execute ${statement} \n ${query}\n`)
+        
         let connection    
         return new Promise((resolve, reject) => {
             pool.promise().getConnection()
                 .then(c  => {
                     connection = c
-                    return connection.query({sql:command.settings.query, nestTables:"."})
+                    return connection.query({sql:query, nestTables:"."})
                 })
                 .then(([results, fields]) => {
                     connection.release()

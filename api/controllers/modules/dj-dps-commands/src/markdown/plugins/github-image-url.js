@@ -51,11 +51,13 @@ module.exports = function (md, opts) {
   // console.log("opts", opts)
   
   if (!opts) return
-  if (!opts.package) return
-  if (!opts.package.repo) return
+  if (!opts.git) return
+  // if (!opts.package.repo) return
   
-
+  console.log(opts.git)
   var repo = gh(opts.package.repo)
+  console.log(repo)
+  
   repo.resourceBase = opts.package.resourceBase || ""
 
   // console.log("repo", repo)
