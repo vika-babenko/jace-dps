@@ -24,6 +24,7 @@ var looseLinkParsing = require('./gfm/link')
 var looseImageParsing = require('./gfm/image')
 var relNoFollow = require('./plugin/nofollow')
 
+var markdownItPlantuml = require('markdown-it-plantuml')
 
  
 
@@ -49,7 +50,8 @@ if (typeof process.browser === 'undefined') {
     'language-haxe',
     'language-ini',
     'language-stylus',
-    'language-cypher'
+    'language-cypher',
+    'language-plantuml'
   ]
 
   languages.forEach(function (language) {
@@ -104,6 +106,8 @@ render.getParser = function (options) {
 
 
     .use(require("../plugins/github-image-url"), options)
+    // .use(require("../plugins/plantuml-img"), options)
+    .use(markdownItPlantuml)
 
   if (options.nofollow) {
     parser.use(relNoFollow)
