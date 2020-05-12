@@ -47,6 +47,7 @@
     "json2csv": "^3.7.2",
     "jsonpath": "^0.2.9",
     "language-cypher": "git+https://github.com/tobiashm/language-cypher.git",
+    "language-kotlin": "github:alexmt/atom-kotlin-language",
     "language-plantuml": "github:plafue/language-plantuml",
     "lodash-node": "^3.10.2",
     "markdown-it-container": "^2.0.0",

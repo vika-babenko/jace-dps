@@ -51,7 +51,8 @@ if (typeof process.browser === 'undefined') {
     'language-ini',
     'language-stylus',
     'language-cypher',
-    'language-plantuml'
+    'language-plantuml',
+    'language-kotlin'
   ]
 
   languages.forEach(function (language) {
