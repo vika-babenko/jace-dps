@@ -90,6 +90,10 @@ render.getParser = function (options) {
 
   var parser = MD(mdOptions)
     .use(lazyHeaders)
+
+    
+
+
     .use(emoji, {shortcuts: {}})
     .use(expandTabs, {tabWidth: 4})
     .use(githubTaskList)
@@ -107,17 +111,22 @@ render.getParser = function (options) {
 
 
     .use(require("../plugins/github-image-url"), options)
-    // .use(require("../plugins/plantuml-img"), options)
     .use(markdownItPlantuml)
 
+    .use( require("../plugins/outlinedBlocks"))
+    .use( require("../plugins/onlineOffline"))
+    .use( require("../plugins/summary"))
+    .use( require("../plugins/quote"))
+    
+    
   if (options.nofollow) {
     parser.use(relNoFollow)
   }
 
-  if (options.highlightSyntax) {
-    parser.use(codeWrap)
-          .use(fenceLanguageAliasing)
-  }
+  // if (options.highlightSyntax) {
+  //   parser.use(codeWrap)
+  //         .use(fenceLanguageAliasing)
+  // }
   if (options.serveImagesWithCDN) parser.use(cdnImages, {package: options.package})
 
   return githubLinkify(parser)

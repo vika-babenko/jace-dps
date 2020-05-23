@@ -5,7 +5,7 @@
  */
 
 const markdownItContainer = require('markdown-it-container');
-const parseAttrs = require('../utils/parseAttrs');
+const parseAttrs = require('./utils/parseAttrs');
 // const t = require('engine/i18n/t');
 // const config = require('config');
 

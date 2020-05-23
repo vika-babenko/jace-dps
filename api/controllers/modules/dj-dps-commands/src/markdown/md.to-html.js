@@ -60,7 +60,7 @@ module.exports = {
                     // .use(require("./plugins/github-image-url"), {package: options.package})  
                     // .use(require("./plugins/markit/plugins/outlinedBlocks"))  
                 
-                let html = parser.render(command.settings.source)    
+                let html = parser.render(command.settings.source.split("\n").map( r => r.trim()).join("\n"))    
               // let html = marky(command.settings.source, {
               //     sanitize: true,
               //     nofollow: true,
