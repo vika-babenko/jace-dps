@@ -56,6 +56,12 @@ module.exports = {
         }  
 
         let url = command.settings.on || connectionUrl
+        let parsed = require("url").parse(url).pathname
+        let pathNames = (parsed) ? parsed.split("/") : []
+        if(pathNames.length > 0) database = pathNames[pathNames.length-1]
+        
+
+
 
         let client
         return new Promise((resolve, reject) => {

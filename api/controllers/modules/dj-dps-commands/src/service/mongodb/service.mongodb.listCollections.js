@@ -4,7 +4,6 @@ const mongo = Promise.promisifyAll(require('mongodb').MongoClient)
 let connectionUrl = process.env.MONGOLAB_URI || process.env.MONGODB_URL || "mongodb://localhost:27017"
 
 
-
 class MongoDBImplError extends Error {
     constructor(message) {
         super(message);
@@ -37,8 +36,13 @@ module.exports = {
     execute: function(command, state, config) {
         
         return new Promise((resolve, reject) => {
-                let db = command.settings.db || "dj-storage"               
                 let url = command.settings.on || connectionUrl 
+                
+                let db = command.settings.db || "dj-storage"               
+                let parsed = require("url").parse(url).pathname
+                let pathNames = (parsed) ? parsed.split("/") : []
+                if(pathNames.length > 0) db = pathNames[pathNames.length-1]
+                
                 let client
                 mongo.connect(url, {
                     useNewUrlParser: true,
@@ -56,16 +60,12 @@ module.exports = {
                         resolve(state)
                         client.close()
                         .catch( e => {
-                            reject(new MongoDBImplError(e.toString()))    
+                            reject(new MongoDBImplError(`On : ${url} \n ${e.toString()}`))    
                         })  
                 })
                     
                 .catch(err => {
-                    // client.close()
-                    // .catch( e => {
-                    //     reject(new MongoDBImplError(err.toString()+"\n"+e.toString()))    
-                    // })
-                    reject(new MongoDBImplError(err.toString()))
+                    reject(new MongoDBImplError(`On : ${url} \n ${err.toString()}`))
                 })
         })
 

@@ -83,6 +83,7 @@
     "sails-hook-dev": "0.2.2",
     "sails-mongo": "^0.12.2",
     "string-natural-compare": "^1.1.1",
+    "url": "^0.11.0",
     "uuid": "^2.0.1",
     "xml2js": "^0.4.16"
   },
