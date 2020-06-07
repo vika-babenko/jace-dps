@@ -1,33 +1,31 @@
 // var neo4j = require('neo4j');
-// var db = new neo4j.GraphDatabase("https://app83770167-ox1Zqa:b.B4Qo0rZ6iEma.oeLC4GLf4cfzUYRL@hobby-ihcfdcabchbdgbkefkpdapel.dbs.graphenedb.com:24780")//process.env['GRAPHENEDB_URL']);
+// var db = new neo4j.GraphDatabase(
+//     "https://app83770167-ShU0I2:b.rIQ7MDqlCGPG.UiYEitJt5P1GbpW3@hobby-nlhgecabchbdgbkegbhaepel.dbs.graphenedb.com:24780"
+// ) //process.env['GRAPHENEDB_URL']);
 // console.log(db)
-// db.cypher({
-//     query: 'CREATE (n:Person {name: {personName}}) RETURN n',
-//     params: {
-//         personName: 'Bob'
-//     }
+// db.query({
+//     query: `MATCH (:Person {name: 'Tom Hanks'})-[:ACTED_IN]->(movies) RETURN movies.title AS title`
 // }, function(err, results){
-//     var result = results[0];
 //     if (err) {
 //         console.error('Error saving new node to database:', err);
 //     } else {
-//         console.log('Node saved to database with id:', result['n']['_id']);
+//         console.log('Node saved to database with id:', JSON.stringify(results, null, " "));
 //     }
 // });
 
 
 var neo4j = require('neo4j-driver');
 
-var graphenedbURL = "bolt://hobby-ihcfdcabchbdgbkefkpdapel.dbs.graphenedb.com:24787"//process.env.GRAPHENEDB_BOLT_URL;
-var graphenedbUser = "app83770167-ox1Zqa"//process.env.GRAPHENEDB_BOLT_USER;
-var graphenedbPass = "b.B4Qo0rZ6iEma.oeLC4GLf4cfzUYRL"//process.env.GRAPHENEDB_BOLT_PASSWORD;
+var graphenedbURL = "bolt://hobby-nlhgecabchbdgbkegbhaepel.dbs.graphenedb.com:24787"//process.env.GRAPHENEDB_BOLT_URL;
+var graphenedbUser = "EDU"//process.env.GRAPHENEDB_BOLT_USER;
+var graphenedbPass = "b.C3oDsxRWmkiT.9tfqNvlO5uEm4KUW"//process.env.GRAPHENEDB_BOLT_PASSWORD;
 
-var driver = neo4j.driver(graphenedbURL, neo4j.auth.basic(graphenedbUser, graphenedbPass));
+var driver = neo4j.driver(graphenedbURL, neo4j.auth.basic(graphenedbUser, graphenedbPass), {encrypted: 'ENCRYPTION_ON'});
 
 var session = driver.session();
 
 session
-    .run("CREATE (n {hello: 'World'}) RETURN n.name")
+    .run("MATCH (:Person {name: 'Tom Hanks'})-[:ACTED_IN]->(movies) RETURN movies")
     .then(function(result) {
 	console.log(">>",result)
         result.records.forEach(function(record) {
@@ -35,7 +33,7 @@ session
         });
 
         session.close();
-	driver.close()
+	   driver.close()
     })
     .catch(function(error) {
         console.log(error);

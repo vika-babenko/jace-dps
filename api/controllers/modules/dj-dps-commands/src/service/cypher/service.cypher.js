@@ -69,7 +69,7 @@ module.exports = {
                 http({
                     uri: command.settings.url,
                     method: "POST",
-                    headers,
+                    // headers,
                     body: {
                         query: command.settings.query
                     },
@@ -81,7 +81,7 @@ module.exports = {
                         http({
                             uri: p.value,
                             method: "GET",
-                            headers,
+                            // headers,
                             json: true
                         }).then( d => {
                             // console.log("populate",d)
