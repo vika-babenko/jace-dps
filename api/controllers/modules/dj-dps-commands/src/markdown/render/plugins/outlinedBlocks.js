@@ -22,8 +22,9 @@ module.exports = function(md) {
           let attrs = parseAttrs(tokens[idx].info, true);
           // console.log(attrs)
           let header = attrs.header;
-          if (header) {
+          if (header && header.replace) {
             //header = header.replace(/`(.*?)`/g, '<code>$1</code>');
+            console.log("HEADER", header)
             header = md.renderInline(header);
           } else {
             header = "" //name //t(`markit.outlined.${name}`);

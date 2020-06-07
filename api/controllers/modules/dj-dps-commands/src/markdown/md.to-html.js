@@ -83,6 +83,7 @@ module.exports = {
               }
               resolve(state)
             } catch (e) {
+              console.log(e.stack)
               reject( new MdImplError(e.toString()))
             }
         })
