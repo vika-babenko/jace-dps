@@ -84,7 +84,7 @@ class ParserUtils {
   pushUrl(tag) {
       values.push(tag);
 
-      return `^${values.length - 1}`;
+      return `@${values.length - 1}`;
   }
 
 

@@ -9,6 +9,7 @@ module.exports = {
 
   execute:function(command,state,config){
     state.head.type = "md"
+    // console.log(state.head)
   	return state;
   },
 

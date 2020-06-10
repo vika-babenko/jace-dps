@@ -1,15 +1,11 @@
 let marky = require( "./render")
 
-
 class MdImplError extends Error {
     constructor(message) {
         super(message);
         this.name = "markdown transform error";
     }
 }
-
-
-
 
 module.exports = {
     name: "md.toHtml",
@@ -44,48 +40,23 @@ module.exports = {
                   serveImagesWithCDN: true,
                   debug: true,
                   package: null, 
-                  // {
-                  //   repo:"https://github.com/javascript-tutorial/ru.javascript.info",
-                  //   // resourceBase:"1-js/04-object-basics/02-garbage-collection"
-                  // },
                   headingAnchorClass: 'anchor',
                   headingSvgClass: ['octicon', 'octicon-link']
                 }
 
                 options = _.extend(options, command.settings.options)
 
-              let parser = marky.getParser(options)
-                
-                // parser
-                    // .use(require("./plugins/github-image-url"), {package: options.package})  
-                    // .use(require("./plugins/markit/plugins/outlinedBlocks"))  
-                
-                let html = parser.render(command.settings.source.split("\n").map( r => r.trim()).join("\n"))    
-              // let html = marky(command.settings.source, {
-              //     sanitize: true,
-              //     nofollow: true,
-              //     linkify: true,
-              //     highlightSyntax: true,
-              //     prefixHeadingIds: true,
-              //     enableHeadingLinkIcons: true,
-              //     serveImagesWithCDN: true,
-              //     debug: true,
-              //     package: {
-              //       repo:"https://github.com/javascript-tutorial/ru.javascript.info",
-              //       resourceBase:"1-js/04-object-basics/02-garbage-collection"
-              //     },
-              //     headingAnchorClass: 'anchor',
-              //     headingSvgClass: ['octicon', 'octicon-link']
-              //   })
-              state.head = {
-                  type: "html",
-                  data: html
+                let parser = marky.getParser(options)
+                let html = parser.render(command.settings.source)//.split("\n").map( r => r.trim()).join("\n"))    
+                state.head = {
+                    type: "html",
+                    data: html
+                }
+                resolve(state)
+              } catch (e) {
+                // console.log(e.stack)
+                reject( new MdImplError(e.toString()))
               }
-              resolve(state)
-            } catch (e) {
-              console.log(e.stack)
-              reject( new MdImplError(e.toString()))
-            }
         })
      },
 

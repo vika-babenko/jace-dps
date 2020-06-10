@@ -24,7 +24,7 @@ const propertyNameRE = /((@[a-zA-Z\-_\.]+|[a-zA-Z\-_\.]+)(?=[\(\)\{\}\:\[\]\s]+)
 const emptyPropsListRE = /\(\s*\)/gi;
 const defaultValueRE = /\:\{\^*[0-9]+\};/gi;
 const defaultStoredValueRE = /\:\^[0-9]+;/gi;
-const urlLookup = /\^[0-9]+/gi;
+const urlLookup = /\@[0-9]+/gi;
 const commandNameRE = /"@*([a-zA-Z0_-]+[a-zA-Z0-9_-]*\.*)+":/gi;
 const paramsRE = /:[\{\^\[]+[a-zA-Z0-9_:",\^\{\}\[\]-]*[\}\]]+;*|:\^[0-9]+;*/gi;
 
@@ -75,10 +75,15 @@ class ScriptParser {
         p = p
             .replace(scriptRE, ParserUtils.varIndex)
             .replace(urlRE, ParserUtils.pushUrl)
-          
-            // .replace(bindableRE,ParserUtils.bindIndex)
+        
+        // console.log(p)
+        // p=p  
+        //     // .replace(bindableRE,ParserUtils.bindIndex)
             .replace(bindableRE,ParserUtils.bindIndex)
             .replace(scriptableRE,ParserUtils.bindIndex)
+        
+        // console.log(p)
+        // p=p  
             
             
             .replace(lineCommentRE, "")
@@ -112,8 +117,9 @@ class ScriptParser {
 
                       let cmdName = cmd.match(commandNameRE)[0];
                       cmdName = cmdName.substring(1, cmdName.length - 2);
-
+                      // console.log(cmdName)
                       const params = cmd.match(paramsRE).map(item => {
+                        // console.log(item)
                         if (item.match(defaultValueRE)) {
                           let p;
                           if (item.match(/\:\{\^/gi)) {
@@ -143,6 +149,8 @@ class ScriptParser {
                 .replace(/;;/gi, ";");
 
 
+            // console.log(p)
+            
             const script = [];
             const cmd = p.split(";");
             // console.log("________________________________________________________________")
@@ -152,6 +160,7 @@ class ScriptParser {
                   // console.log(`{${cm.replace(/\^[0-9]+/gim, ParserUtils.varValue)}}`)
                     
                   const t = JSON.parse(`{${cm.replace(/\^[0-9]+/gim, ParserUtils.varValue)}}`);
+                  // console.log(t)
                   script.push(t);
                 } catch(e) {
 
