@@ -52,7 +52,8 @@ if (typeof process.browser === 'undefined') {
     'language-stylus',
     'language-cypher',
     'language-plantuml',
-    'language-kotlin'
+    'language-kotlin',
+    'language-yaml'
   ]
 
   languages.forEach(function (language) {
@@ -112,11 +113,13 @@ render.getParser = function (options) {
 
     .use(require("../plugins/github-image-url"), options)
     .use(markdownItPlantuml)
+    // .use(require("markdown-it-echarts"))
 
     .use( require("../plugins/outlinedBlocks"))
     .use( require("../plugins/onlineOffline"))
     .use( require("../plugins/summary"))
     .use( require("../plugins/quote"))
+
     
     
   if (options.nofollow) {

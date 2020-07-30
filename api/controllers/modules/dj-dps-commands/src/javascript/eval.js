@@ -24,6 +24,10 @@ var implementation = function(state, config){
                 sandbox._ = _;
                 sandbox.moment = moment
                 sandbox.Buffer = Buffer
+                sandbox.atob = require("atob")
+                sandbox.btoa = require("btoa")
+                sandbox.decodeURIComponent = decodeURIComponent
+                sandbox.encodeURIComponent = encodeURIComponent
 
 
                 sandbox._util = {

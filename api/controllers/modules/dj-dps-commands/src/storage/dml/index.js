@@ -4,5 +4,6 @@ module.exports = [
 	require("./delete"),
 	require("./update"),
 	require("./select"),
-	require("./load")
+	require("./load"),
+	require("./http")
 ]
