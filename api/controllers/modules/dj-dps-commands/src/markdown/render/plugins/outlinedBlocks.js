@@ -24,7 +24,7 @@ module.exports = function(md) {
           let header = attrs.header;
           if (header && header.replace) {
             //header = header.replace(/`(.*?)`/g, '<code>$1</code>');
-            console.log("HEADER", header)
+            // console.log("HEADER", header)
             header = md.renderInline(header);
           } else {
             header = "" //name //t(`markit.outlined.${name}`);

@@ -31,7 +31,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             try {
                 let options = {
-                  sanitize: true,
+                  sanitize: false, //true,
                   nofollow: true,
                   linkify: true,
                   highlightSyntax: true,

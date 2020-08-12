@@ -26,6 +26,9 @@ var relNoFollow = require('./plugin/nofollow')
 
 var markdownItPlantuml = require('markdown-it-plantuml')
 
+// var markdownItLatex =  require('markdown-it-latex')
+var markdownItAsciiMath =  require('./plugin/markdown-it-asciimath-1')
+
  
 
 if (typeof process.browser === 'undefined') {
@@ -113,6 +116,9 @@ render.getParser = function (options) {
 
     .use(require("../plugins/github-image-url"), options)
     .use(markdownItPlantuml)
+    // .use(markdownItLatex)
+    .use(markdownItAsciiMath)
+    
     // .use(require("markdown-it-echarts"))
 
     .use( require("../plugins/outlinedBlocks"))

@@ -1,61 +1,52 @@
 let STAT = require("../lib/stat")
 let util = require("util");
 let s_util = require("./utils");
-let StatImplError = require("./staterror");
-let _ = require("lodash-node");
-
+let StatImplError = require("./staterror")
 
 
 module.exports = {
-    name: "stat.entropy",
+    name: "stat.histogram",
 
     synonims: {
-        "stat.entropy": "stat.entropy",
-        "s.entropy": "stat.entropy"
+        "stat.histogram": "stat.histogram",
+        "s.histogram": "stat.histogram",
+        "stat.hist": "stat.histogram",
+        "s.hist": "stat.histogram"        
     },
 
     "internal aliases":{
         "mapper": "mapper",
-        "by": "mapper",
-        "for": "mapper"
+        "by": "mapper"
     },
 
-    defaultProperty: {
-        "stat.entropy": "mapper",
-        "s.entropy": "mapper"
-    },
+    defaultProperty: {},
 
     execute: function(command, state, config) {
 
+        // if(!s_util.isMatrix( state.head.data ))
+        //     throw new StatImplError("Incompatible context type.") 
+
+        command.settings.mapper = command.settings.mapper || (item => item)
+        
+        if(!util.isFunction(command.settings.mapper)){
+            let attr_name = command.settings.mapper
+            command.settings.mapper = item => item[attr_name]
+        }
+
+        
         try {
-            
-            if( state.head.data.length == 0 ) throw new StatImplError("Cannot calc entropy for empty collection.")
 
-            command.settings.mapper = command.settings.mapper || (item => item)       
-            command.settings.mapper = (util.isArray(command.settings.mapper)) ? command.settings.mapper : [command.settings.mapper];
-
-            command.settings.mapper = command.settings.mapper.map( f => ({ 
-                    field: f,
-                    values: _.pairs(
-                                _.countBy(s_util.array2floats(state.head.data.map( v => v[f])))
-                            )
-                            .map( v => v[1]/state.head.data.length)
-                })
-            )
+            let res = STAT.hist(
+                //s_util.array2floats(
+                    state.head.data.map(command.settings.mapper)
+                // )
+                , command.settings.bins, command.settings.min, command.settings.max
+            )    
             
-            let res = {
-                statistic:"entropy"
+            state.head = {
+                type:   "json",
+                data:   res
             }
-
-            command.settings.mapper.forEach( f => {
-                res[f.field] = STAT.entropy(f.values)/Math.log(f.values.length)
-            })
-            
-           state.head = {
-                type: "json",
-                data: res
-            }
-
         } catch (e) {
             throw new StatImplError(e.toString())
         }
@@ -97,4 +88,3 @@ module.exports = {
         }
     }
 }
-

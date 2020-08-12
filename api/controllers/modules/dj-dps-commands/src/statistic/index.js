@@ -1,6 +1,6 @@
 module.exports = [
     require("./corr"),
-    // require("./hist"),
+    require("./histogram"),
     // require("./imput"),
     // require("./norm"),
     require("./rank"),

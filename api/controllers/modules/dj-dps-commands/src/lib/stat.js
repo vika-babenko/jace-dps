@@ -746,6 +746,41 @@ function granulate(data,bins){
 }
 
 
+function hist(data, bins, minValue, maxValue){
+  
+  minValue = minValue || min(data);
+  maxValue = maxValue || max(data);
+  bins = bins || 10;
+
+  let res = []
+  
+  delta = (maxValue - minValue)/bins
+  
+  for(let i=0; i<bins; i++) res.push({
+    range:[
+      i*delta,
+      (i+1)*delta
+    ],
+    value:0
+  })
+    
+
+  data.forEach(function(item){
+    if(item != null && !Number.isNaN(item)){
+      let index = Math.floor((item - minValue) / (maxValue - minValue) * bins);
+      index = (index == bins) ? index - 1 : index;
+      res[index].value++
+    }
+  })
+ 
+  res = res.map( item => {
+    item.value = item.value / data.length
+    return item
+  })
+  return res;
+}
+
+
 var util = require("util");
 var Ordinal = function(minValue,maxValue,bins){
   return function(value){
@@ -763,3 +798,4 @@ exports.standardize = standardize;
 exports.logNormalize = logNormalize;
 exports.rank = rank; 
 exports.granulate = granulate; 
+exports.hist = hist; 
