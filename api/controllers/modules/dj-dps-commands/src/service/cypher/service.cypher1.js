@@ -38,13 +38,14 @@ module.exports = {
 	        }
 	        
 	        return new Promise( (resolve, reject) => {
-
+                
+		console.log("Start Cypher Query")
+                
                 let driver = neo4j.driver(
                         graphenedbURL, 
                         neo4j.auth.basic(graphenedbUser, graphenedbPass), 
                         {encrypted: 'ENCRYPTION_ON'}
                     );
-
                 let session = driver.session();
 
                     session

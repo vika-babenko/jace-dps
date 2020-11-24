@@ -90,7 +90,7 @@
     "mysql2": "^2.1.0",
     "natural": "^0.6.3",
     "neo4j": "^1.1.1",
-    "neo4j-driver": "^4.0.2",
+    "neo4j-driver": "^4.1.0",
     "newrelic": "^1.18.4",
     "newsapi": "^2.4.0",
     "node-xlsx": "^0.6.0",
