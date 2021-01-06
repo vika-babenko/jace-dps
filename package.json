@@ -24,7 +24,7 @@
     "2d-bicubic-interpolate": "^1.0.7",
     "asciimath-to-latex": "^0.3.2",
     "atob": "^2.1.2",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bcryptjs": "2.1.0",
     "bluebird": "^3.5.0",
     "btoa": "^1.2.1",
