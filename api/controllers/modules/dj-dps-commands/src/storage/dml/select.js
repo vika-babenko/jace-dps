@@ -35,11 +35,11 @@ var impl = function(params, state){
         storageUtils.access(state.client, model, 'select')
             .then(() => {
                 if(!sails.models[model]){
-                    reject(new DMLSelectImplError("Entity collection '" + model + "' is not available"))
+                    reject(new DMLSelectImplError("Entity collection '" + model + "' is not available\n"+ JSON.stringify(sails.models[model])))
                     return
                 }
                 if(typeof sails.models[model] != "object"){
-                    reject(new DMLSelectImplError("Entity collection '" + model + "' is not available"))
+                    reject(new DMLSelectImplError("Entity collection '" + model + "' is not a object"))
                     return
                 }
                  

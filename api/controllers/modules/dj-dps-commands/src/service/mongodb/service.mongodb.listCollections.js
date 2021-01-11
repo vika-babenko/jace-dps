@@ -1,9 +1,7 @@
 let Promise = require("bluebird")
 const mongo = Promise.promisifyAll(require('mongodb').MongoClient)
 
-let connectionUrl = "mongodb://jace:jace@cluster0-shard-00-00.kn4rz.mongodb.net:27017,cluster0-shard-00-01.kn4rz.mongodb.net:27017,cluster0-shard-00-02.kn4rz.mongodb.net:27017/dj-storage?ssl=true&replicaSet=atlas-o5kcii-shard-0&authSource=admin&retryWrites=true&w=majority"
-
-// process.env.MONGOLAB_URI || process.env.MONGODB_URL || "mongodb://localhost:27017"
+let connectionUrl = process.env.MONGOLAB_URI || process.env.MONGODB_URL || "mongodb://localhost:27017"
 
 
 class MongoDBImplError extends Error {
@@ -48,8 +46,7 @@ module.exports = {
                 let client
                 mongo.connect(url, {
                     useNewUrlParser: true,
-                    useUnifiedTopology: true,
-                    ssl:true
+                    useUnifiedTopology: true
                  })
                 .then( c => {
                     let client = c

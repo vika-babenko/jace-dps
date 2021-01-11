@@ -5,6 +5,8 @@ var vm = require("vm");
 var uuid = require('uuid');
 let _ = require("lodash-node");
 let moment = require("moment")
+// let Promise = require("bluebird")
+let runDpsCommand = require("../dps/script")
 
 
 var EvalImplError = function(message) {
@@ -28,8 +30,21 @@ var implementation = function(state, config){
                 sandbox.btoa = require("btoa")
                 sandbox.decodeURIComponent = decodeURIComponent
                 sandbox.encodeURIComponent = encodeURIComponent
+                sandbox.Promise = Promise
+                // sandbox.console = console
 
-
+                sandbox.runDps = (script, args, host) => {
+                  try {
+                    console.log("Run script via js at ", ((host)? host : "default"))
+                    console.log(script)
+                    console.log("Arguments:")
+                    console.log(args)
+                    return runDpsCommand.execute( {settings:_.extend({script, host},args)}, state, config)
+                  } catch (e) {
+                     throw new EvalImplError(e.toString())
+                  } 
+                }
+                
                 sandbox._util = {
 
                     

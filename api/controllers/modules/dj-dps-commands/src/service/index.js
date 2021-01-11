@@ -11,4 +11,5 @@ module.exports = [
 .concat(require("./mysql"))
 .concat(require("./plantuml"))
 .concat(require("./mongodb"))
+.concat(require("./github"))
 	

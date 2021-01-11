@@ -25,7 +25,7 @@ const emptyPropsListRE = /\(\s*\)/gi;
 const defaultValueRE = /\:\{\^*[0-9]+\};/gi;
 const defaultStoredValueRE = /\:\^[0-9]+;/gi;
 const urlLookup = /\@[0-9]+/gi;
-const commandNameRE = /"@*([a-zA-Z0_-]+[a-zA-Z0-9_-]*\.*)+":/gi;
+const commandNameRE = /@*([a-zA-Z0_-]+[a-zA-Z0-9_-]*\.*)+:/gi;
 const paramsRE = /:[\{\^\[]+[a-zA-Z0-9_:",\^\{\}\[\]-]*[\}\]]+;*|:\^[0-9]+;*/gi;
 
 const scriptRE = /(\<\?[a-z]([^?]|(\?+[^?\>]))*\?\>)/g;
@@ -67,23 +67,26 @@ class ScriptParser {
         const self = this;
 
         let p = str
-            .replace(specSymbols, "\\\\$1")
-        // console.log("______________________________")
+            // .replace(specSymbols, "\\\\$1")
+        // console.log("specSymbols______________________________")
         // console.log(p)
-        // console.log("______________________________")
             
         p = p
             .replace(scriptRE, ParserUtils.varIndex)
             .replace(urlRE, ParserUtils.pushUrl)
         
+        // console.log("scriptRE urlRE______________________________")
         // console.log(p)
-        // p=p  
+        
+        p=p  
         //     // .replace(bindableRE,ParserUtils.bindIndex)
             .replace(bindableRE,ParserUtils.bindIndex)
             .replace(scriptableRE,ParserUtils.bindIndex)
         
+        // console.log("bindableRE scriptableRE______________________________")
         // console.log(p)
-        // p=p  
+        
+        p=p  
             
             
             .replace(lineCommentRE, "")
@@ -95,14 +98,14 @@ class ScriptParser {
 
             .replace(commandSplitRE, "$1;$2")
             .replace(nonbrackedParamsRE, "({$1})")
-            .replace(propertyNameRE, "\"$1\"")
+            .replace(propertyNameRE, "$1")
             .replace(/\'/gim, "\"")
             .replace(emptyPropsListRE, "({})")
             .replace(/\(/gim, ":")
             .replace(/\)/gim, "");
 
         try {
-            // console.log("___________________________________________________")
+            // console.log(" TRY ___________________________________________________")
             // console.log(p)
             // console.log("===================================================")
             
@@ -116,10 +119,10 @@ class ScriptParser {
                     try {
 
                       let cmdName = cmd.match(commandNameRE)[0];
-                      cmdName = cmdName.substring(1, cmdName.length - 2);
-                      // console.log(cmdName)
+                      cmdName = cmdName.substring(0, cmdName.length - 1);
+                      // console.log("CMD ",cmdName)
                       const params = cmd.match(paramsRE).map(item => {
-                        // console.log(item)
+                        // console.log("P => ",item)
                         if (item.match(defaultValueRE)) {
                           let p;
                           if (item.match(/\:\{\^/gi)) {
@@ -157,18 +160,22 @@ class ScriptParser {
             cmd.forEach((cm, i) => {
                 try {
                   
-                  // console.log(`{${cm.replace(/\^[0-9]+/gim, ParserUtils.varValue)}}`)
+                  // console.log("CM ", cm, ` => |{${cm.replace(/\^[0-9]+/gim, ParserUtils.varValue)}}|`)
                     
-                  const t = JSON.parse(`{${cm.replace(/\^[0-9]+/gim, ParserUtils.varValue)}}`);
+                  const t = eval(`({${cm.replace(/\^[0-9]+/gim, ParserUtils.varValue)}})`) //JSON.parse(`{${cm.replace(/\^[0-9]+/gim, ParserUtils.varValue)}}`);
                   // console.log(t)
                   script.push(t);
                 } catch(e) {
+                  // console.log("ERROR-----------------------------")
+                  // console.log("CM ", cm, ` => |{${cm.replace(/\^[0-9]+/gim, ParserUtils.varValue)}}|`)
+                  // console.log(script)  
 
                   throw new ParserError(e.message, i, ErrorMapper.findLineOfCommandStart(str, i));
                 }
 
             })
 
+            // console.log(script)
             const result = script.map(c => {
 
                 const res = {
@@ -190,6 +197,8 @@ class ScriptParser {
             }
         });
 
+        // console.log("---------------  result ----------------------")
+        // console.log(result)
         return result;
       } catch (e) {
         if (!(e instanceof ParserError))
