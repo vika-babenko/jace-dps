@@ -9,6 +9,7 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.http.html
  */
 
+console.log(`NODE_ENV=${process.env.NODE_ENV}`)
 module.exports.http = {
 
   /****************************************************************************
