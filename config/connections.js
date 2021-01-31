@@ -60,7 +60,8 @@ module.exports.connections = {
   mongodbServer: {
     adapter: 'sails-mongo',
 	url:"mongodb://jace:jace@cluster0-shard-00-00.kn4rz.mongodb.net:27017,cluster0-shard-00-01.kn4rz.mongodb.net:27017,cluster0-shard-00-02.kn4rz.mongodb.net:27017/dj-storage?ssl=true&replicaSet=atlas-o5kcii-shard-0&authSource=admin&retryWrites=true&w=majority",    
-// url:"mongodb://jace:jace@cluster0-shard-00-00.99389.mongodb.net:27017,cluster0-shard-00-01.99389.mongodb.net:27017,cluster0-shard-00-02.99389.mongodb.net:27017/dj-portal?ssl=true&replicaSet=atlas-b2k500-shard-0&authSource=admin&retryWrites=true&w=majority",
+replset: {sslValidate: false},
+//url:"mongodb://jace:jace@cluster0-shard-00-00.99389.mongodb.net:27017,cluster0-shard-00-01.99389.mongodb.net:27017,cluster0-shard-00-02.99389.mongodb.net:27017/dj-portal?ssl=true&replicaSet=atlas-b2k500-shard-0&authSource=admin&retryWrites=true&w=majority",
 // },
     // replSet: {
     //   servers: [
@@ -92,7 +93,6 @@ module.exports.connections = {
 // //     host: process.env.DB_PORT_27017_TCP_ADDR || '127.0.0.1',
 // //     port: process.env.DB_PORT_27017_TCP_PORT || 27017,
 // //     url: process.env.MONGOLAB_URI || process.env.MONGODB_URL,
-    replset: {sslValidate: false},
     user: 'jace',
     password: 'jace',
     // database: 'dj-portal',

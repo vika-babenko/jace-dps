@@ -45,20 +45,26 @@ module.exports.bootstrap = function (cb) {
     .find({})
     .then((res) => {
       sails.log.debug("Restore user defined models:")
-      Promise.all( res.map((model) => {
+      Promise.reduce( res, (total, model) => {
           sails.log.debug(`=> ${model.identity}`)
+          
           return writeFile(   `./api/models/${model.identity}.js`, 
             `module.exports = ${JSON.stringify(model.model)}`
-          );
-      }))
+          ).then( () => total++)
+
+      }, 0)
       .then((res)=> {
         sails.log.debug('Reload ORM hook')
-        reloadORM(sails)
-          .then(() => {
-            sails.log.debug('User defined models are restored')
-            cb()
-          })
-          .catch(e => {sails.log.error(e)})
+        cb()
+        // reloadORM(sails)
+        //   .then(() => {
+        //     sails.log.debug('User defined models are restored')
+        //     cb()
+        //   })
+        //   .catch(e => {
+        //     sails.log.error(e)
+        //     cb()
+        //   })
       })
     })
 
