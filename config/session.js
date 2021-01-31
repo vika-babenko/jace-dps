@@ -71,12 +71,12 @@ module.exports.session = {
   // prefix: 'sess:'
 
 
-  **************************************************************************
-  *                                                                          *
-  * Uncomment the following lines to use your Mongo adapter as a session     *
-  * store                                                                    *
-  *                                                                          *
-  **************************************************************************
+  // **************************************************************************
+  // *                                                                          *
+  // * Uncomment the following lines to use your Mongo adapter as a session     *
+  // * store                                                                    *
+  // *                                                                          *
+  // **************************************************************************
 
   adapter: 'mongo',
   
