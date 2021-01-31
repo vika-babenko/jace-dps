@@ -41,26 +41,26 @@ module.exports.bootstrap = function (cb) {
   
   // Restore user defined models
 
-  Entities
-    .find({})
-    .then((res) => {
-      sails.log.debug("Restore user defined models:")
-      Promise.all( res.map((model) => {
-          sails.log.debug(`=> ${model.identity}`)
-          return writeFile(   `./api/models/${model.identity}.js`, 
-            `module.exports = ${JSON.stringify(model.model)}`
-          );
-      }))
-      .then((res)=> {
-        sails.log.debug('Reload ORM hook')
-        reloadORM(sails)
-          .then(() => {
-            sails.log.debug('User defined models are restored')
-            cb()
-          })
-          .catch(e => {sails.log.error(e)})
-      })
-    })
+//   Entities
+//     .find({})
+//     .then((res) => {
+//       sails.log.debug("Restore user defined models:")
+//       Promise.all( res.map((model) => {
+//           sails.log.debug(`=> ${model.identity}`)
+//           return writeFile(   `./api/models/${model.identity}.js`, 
+//             `module.exports = ${JSON.stringify(model.model)}`
+//           );
+//       }))
+//       .then((res)=> {
+//         sails.log.debug('Reload ORM hook')
+//         reloadORM(sails)
+//           .then(() => {
+//             sails.log.debug('User defined models are restored')
+//             cb()
+//           })
+//           .catch(e => {sails.log.error(e)})
+//       })
+//     })
 
   // sails.services.passport.loadStrategies();
 
