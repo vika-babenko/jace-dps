@@ -49,8 +49,13 @@ module.exports.http = {
        var fn;
 
        // Default to built-in bodyParser:
-       fn = require(`${(process.env.NODE_ENV == "production") ? "" : "sails/node_modules/"}skipper`);
+      try { 
+      fn = require("sails/node_modules/skipper");
        return fn(opts);
+      } catch(e){
+        fn = require("skipper");
+       return fn(opts);
+        
      })()
   }
 }  
