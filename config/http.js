@@ -55,7 +55,7 @@ module.exports.http = {
       } catch(e){
         fn = require("skipper");
        return fn(opts);
-        
+      }  
      })()
   }
 }  
