@@ -5,5 +5,7 @@ module.exports =
 		require("./content/stems"),
 		require("./content/tokens"),
 		require("./content/n-grams"),
-		require("./content/tfidf")	
+		require("./content/tfidf"),
+		require("./content/lang-detect"),
+				
 	]

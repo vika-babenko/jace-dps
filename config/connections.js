@@ -59,7 +59,8 @@ module.exports.connections = {
   //mongodb://<username>:<password>@cluster0-shard-00-00.99389.mongodb.net:27017,cluster0-shard-00-01.99389.mongodb.net:27017,cluster0-shard-00-02.99389.mongodb.net:27017/<dbname>?ssl=true&replicaSet=atlas-b2k500-shard-0&authSource=admin&retryWrites=true&w=majority
   mongodbServer: {
     adapter: 'sails-mongo',
-    url:"mongodb://jace:jace@cluster0-shard-00-00.kn4rz.mongodb.net:27017,cluster0-shard-00-01.kn4rz.mongodb.net:27017,cluster0-shard-00-02.kn4rz.mongodb.net:27017/dj-storage?ssl=true&replicaSet=atlas-o5kcii-shard-0&authSource=admin&retryWrites=true&w=majority",
+	url:"mongodb://jace:jace@cluster0-shard-00-00.kn4rz.mongodb.net:27017,cluster0-shard-00-01.kn4rz.mongodb.net:27017,cluster0-shard-00-02.kn4rz.mongodb.net:27017/dj-storage?ssl=true&replicaSet=atlas-o5kcii-shard-0&authSource=admin&retryWrites=true&w=majority",    
+//url:"mongodb://jace:jace@cluster0-shard-00-00.99389.mongodb.net:27017,cluster0-shard-00-01.99389.mongodb.net:27017,cluster0-shard-00-02.99389.mongodb.net:27017/dj-portal?ssl=true&replicaSet=atlas-b2k500-shard-0&authSource=admin&retryWrites=true&w=majority",
 // },
     // replSet: {
     //   servers: [
