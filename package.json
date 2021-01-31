@@ -57,6 +57,7 @@
     "lexing": "^0.9.0",
     "lodash": "^4.17.20",
     "lodash-node": "^3.10.2",
+    "lodash.defaults": "^4.2.0",
     "markdown-it-asciimath": "^1.0.0",
     "markdown-it-container": "^2.0.0",
     "markdown-it-echarts": "^0.1.3",
