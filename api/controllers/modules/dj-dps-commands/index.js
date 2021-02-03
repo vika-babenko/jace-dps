@@ -31,6 +31,8 @@ module.exports =
         .concat(require("./src/bbn"))
         .concat(require("./src/service"))
         .concat(require("./src/markdown"))
+        .concat(require("./src/lexer"))
+        
         
         
 console.log("SUPPORTED COMMANDS")

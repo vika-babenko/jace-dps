@@ -9,7 +9,23 @@ var SetImplError = function(message) {
 SetImplError.prototype = Object.create(Error.prototype);
 SetImplError.prototype.constructor = SetImplError;
 
-var implementation = function(_var, value, state) {
+var implementation = function(settings, state) {
+    
+    let _var = settings.var
+    let value = settings.value
+    let _const = settings.const
+
+    if(!util.isUndefined(_const)) {
+        state.storage = 
+            _.set(
+                state.storage, 
+                _var, 
+                _const
+            )
+
+        return state;
+    }
+    
     if (util.isUndefined(value) || value == "" || value == "$") {
         state.storage = 
             _.set(
@@ -94,7 +110,8 @@ module.exports = {
         "var": "var",
         "variable": "var",
         "value": "value",
-        "val": "value"
+        "val": "value",
+        "const":"const"
     },
     defaultProperty: {
         "set": "var",
@@ -136,7 +153,7 @@ module.exports = {
     execute: function(command, state) {
         try {
             if (command.settings.var) 
-                return(implementation(command.settings.var,command.settings.value,state))
+                return(implementation(command.settings,state))
             throw new SetImplError("Variable is not defined.")
         } catch (e) {
             throw new SetImplError(e.toString())

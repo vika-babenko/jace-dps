@@ -39,7 +39,7 @@ class ParserUtils {
 
       if (key.indexOf("?") == 0) {
           key = key
-              .replace(/\"/gim, '\\"');
+              // .replace(/\"/gim, '\\"');
 
           let postProcess;
           key = key.replace(
@@ -51,29 +51,31 @@ class ParserUtils {
                   }
               )
               .replace(/(^\?)|(\?$)/g, "")
-              .replace(/\r/gim, "\\r")
-              .replace(/\n/gim, "\\n")
-              .replace(/\t/gim, "\\t")
+              // .replace(/\r/gim, "\\r")
+              // .replace(/\n/gim, "\\n")
+              // .replace(/\t/gim, "\\t")
               //.replace(/\"/gim, "'")
 
           values.push(key);
+          // console.log("VALUES", values)
 
           return `context(value:^${values.length - 1});${postProcess}();`;
       } else {
-          key = key.replace(/\"/gi, "'");
+          // key = key.replace(/\"/gi, "'");
           // console.log("value => ", key)
           values.push(key);
-
+          // console.log("VALUES", values)
           return `^${values.length - 1}`;
       }
+
   }
 
   bindIndex(tag){
     let key = tag
-              .replace(/\"/gim, '\\"')
-              .replace(/\r/gim, "\\r")
-              .replace(/\n/gim, "\\n")
-              .replace(/\t/gim, "\\t")
+              // .replace(/\"/gim, '\\"')
+              // .replace(/\r/gim, "\\r")
+              // .replace(/\n/gim, "\\n")
+              // .replace(/\t/gim, "\\t")
               
     // console.log("bind => ", key)
     values.push(key)
@@ -103,7 +105,7 @@ class ParserUtils {
           r = values[Number(key)];
       }
 
-      return `"${r}"`;
+      return `${JSON.stringify(r)}`;
   }
 }
 

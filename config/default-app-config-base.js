@@ -1,114 +1,137 @@
 module.exports.defaultAppConfigBase = {
-  "skinName": "default",
-  "title": "Title",
-  "description": "Description",
-  "keywords": [
-    ""
-  ],
+  "title": "DJVUE application",
+  "description": "",
+  "keywords": [],
   "isPublished": true,
-  "appWidgets": [
+    "pages": [
     {
-      "type": "language-selector",
-      "instanceName": "language-selector",
-      "showFlags": true
-    },
-    {
-      "type": "page-list",
-      "instanceName": "page-list-nav"
-    },
-    {
-      "instanceName": "AppTopbar",
-      "type": "v2.topbar",
-      "icon": "/widgets/v2.topbar/icon.png",
-      "decoration": {
-        "languageSelector": {
-          "enable": true,
-          "showFlag": true,
-          "showTitle": true
-        },
-        "loginButton": true,
-        "gotoApps": true
-      },
-      "content": [
-        {
-          "key": "qtzzi8mqy0huamuwdusypsyvi",
-          "title": "About",
-          "href": "/app/dj/about"
-        },
-        {
-          "key": "dlbwln8wa4xic3td4af5pzaor",
-          "title": "Home",
-          "href": "/app/dj/"
-        }
-      ]
-    }
-  ],
-  "pages": [
-    {
-      "shortTitle": "Home",
-      "href": "",
-      "template": "1-col",
+      "title": "Home",
+      "layout": "layout-1-2",
       "holders": {
-        "column": {
+        "Top": {
           "widgets": [
             {
-              "text": "<div><font size=\"6\">Home Page</font></div>Empty home page. You can switch to design mode to edit this contents or add new widgets",
-              "type": "htmlwidget",
-              "instanceName": "main-page-html-widget",
-              "icon": "/widgets/htmlwidget/icon.png"
+              "type": "html-widget",
+              "name": "noname",
+              "icon": "mdi-language-html5",
+              "options": {
+                "widget": {
+                  "visible": true
+                }
+              },
+              "data": {
+                "source": "embedded",
+                "embedded": "<div class=\"subheading primary--text\" style=\"padding-bottom:3em;\">\n    <center>\n        <h1>\n            <span>\n                <img src=\"{{app.config.icon}}\" style=\"width:1em;padding:0.5em 0 0 0\">\n            </span>\n            {{app.title}}\n        </h1>\n        Dynamic reload content\n    </center>    \n</div>",
+                "script": ""
+              },
+              "id": "brc5hkwvwqn"
             }
-          ],
-          "width": 1318
-        }
-      },
-      "subscriptions": []
-    },
-    {
-      "shortTitle": "About",
-      "href": "about",
-      "template": "1-col",
-      "holders": {
-        "column": {
+          ]
+        },
+        "Column 1": {
           "widgets": [
             {
-              "text": "<p><font size=\"6\">About App</font></p>",
-              "type": "htmlwidget",
-              "instanceName": "4dvg3sv7mjz1d83acqefnoecdi",
-              "icon": "/widgets/htmlwidget/icon.png"
-            },
-            {
-              "masterWidget": "",
-              "type": "app-info",
-              "instanceName": "zg5zqh9y4cejt53bhk9be29",
-              "icon": "/widgets/app-info/icon.png"
+              "type": "html-widget",
+              "name": "noname",
+              "icon": "mdi-language-html5",
+              "options": {
+                "widget": {
+                  "visible": true
+                }
+              },
+              "data": {
+                "source": "embedded",
+                "embedded": "<center>\n    <i>DJ{{app.config.description}}</i>    \n</center>\n",
+                "script": ""
+              },
+              "id": "eqrqp6siyuf"
             }
-          ],
-          "width": 1328
-        }
-      },
-      "subscriptions": []
-    },
-    {
-      "href": "404",
-      "template": "1-col",
-      "holders": {
-        "column": {
+          ]
+        },
+        "Column 2": {
           "widgets": [
             {
-              "type": "title",
-              "title": "404 error",
-              "instanceName": "title"
-            },
-            {
-              "type": "htmlwidget",
-              "text": "Page not found",
-              "instanceName": "error-message"
+              "type": "html-widget",
+              "name": "noname",
+              "icon": "mdi-language-html5",
+              "options": {
+                "widget": {
+                  "visible": true
+                }
+              },
+              "data": {
+                "source": "embedded",
+                "embedded": "<center>\n    <i>This page use 1-2 column layout.</i>    \n</center>\n",
+                "script": ""
+              },
+              "id": "oax4m3z4ep"
             }
           ]
         }
       }
     }
   ],
-  "name": "dj",
-  "i18n": {}
+
+
+  "name": "",
+  "i18n": {
+    "en": {},
+    "uk": {}
+  },
+  "icon": "",
+   "skin": {
+    "holders": {
+      "AppHeader": {
+        "widgets": [
+          {
+            "type": "html-widget",
+            "name": "noname",
+            "icon": "mdi-language-html5",
+            "options": {
+              "widget": {
+                "visible": true
+              }
+            },
+            "data": {
+              "source": "embedded",
+              "embedded": "<div style=\"padding:3em 0;\" class=\"primary white--text subheading\">\n    <center>\n        This app skin contains two static holders. This is \"AppHeader.\"    \n    </center>\n</div>\n",
+              "script": ""
+            },
+            "id": "w5vd074og0p"
+          }
+        ]
+      },
+      "AppFooter": {
+        "widgets": [
+          {
+            "type": "html-widget",
+            "name": "noname",
+            "icon": "mdi-language-html5",
+            "options": {
+              "widget": {
+                "visible": true
+              }
+            },
+            "data": {
+              "source": "embedded",
+              "embedded": "<div style=\"padding:3em 0;\" class=\"primary white--text subheading\">\n    <center>\n        This app skin contains two static holders. This is \"AppFooter.\"    \n    </center>\n</div>",
+              "script": ""
+            },
+            "id": "361f70vcsjf"
+          }
+        ]
+      }
+    }
+  },
+ 
+  "dpsURL": "",
+  "theme": {
+    "primary": "#26A69A",
+    "secondary": "#455A64",
+    "accent": "#00796B",
+    "error": "#EF5350",
+    "warning": "#FF9800",
+    "info": "#42A5F5",
+    "success": "#00C853"
+  }
 }

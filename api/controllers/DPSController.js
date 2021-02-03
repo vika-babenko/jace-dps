@@ -11,7 +11,7 @@ module.exports = {
 
     run: function(req, resp) {
         
-        // console.log("RUN")
+        // console.log(req.headers)
         var host, script, locale, state;
 
         // console.log("REQ.FILE",req.file('file'))
@@ -29,7 +29,7 @@ module.exports = {
                 // console.log("SCRIPT", req.body.script)
 
                 // script = JSON.parse(JSON.stringify(req.body.script));
-                script = JSON.parse(decodeURIComponent(req.body.script));
+                script = decodeURIComponent(req.body.script).toString() //decodeURIComponent(req.body.script) //JSON.parse(decodeURIComponent(req.body.script));
                 
                 // console.log("STATE", req.body.state)
                 if(!req.body.state=="undefined") state =  JSON.parse(decodeURIComponent(req.body.state))
@@ -56,6 +56,8 @@ module.exports = {
                     name: file.fd
                 };
 
+                state.storage.$request = req
+                
                 // console.log("FILE CONTENT ", state.storage.$file)
             
             } else {
@@ -64,7 +66,7 @@ module.exports = {
                 // console.log(decodeURIComponent(req.body.script))
                 // console.log("-----------------------------------------------")
                 
-                script = JSON.parse(decodeURIComponent(req.body.script));
+                script = decodeURIComponent(req.body.script).toString()//JSON.parse(decodeURIComponent(req.body.script));
                 // console.log("Run script", script)
 
                 // console.log("req.body.state", req.body.state)
@@ -81,7 +83,8 @@ module.exports = {
                     locale : locale 
                 }
                 state.client = req.body.client;
-            
+                state.storage = state.storage || {}
+                state.storage.$request = req
             }
             
             // console.log("host", host)

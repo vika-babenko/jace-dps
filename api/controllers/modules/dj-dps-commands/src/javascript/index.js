@@ -1,4 +1,5 @@
 module.exports = [
     require("./eval"),
-    require("./uuid")
+    require("./uuid"),
+    require("./wait")
 ]
