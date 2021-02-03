@@ -108,7 +108,7 @@ module.exports.session = {
 //   port: process.env.DB_PORT_27017_TCP_PORT || 27017,
   // db: 'dj-portal',
   collection: 'sessions',
-  url: process.env.MONGOLAB_URI || process.env.MONGODB_URL || process.env.ATLAS_URL 
+  url: process.env.MONGOLAB_URI || process.env.MONGODB_URL || process.env.ATLAS_URL, 
 
   /***************************************************************************
   *                                                                          *
