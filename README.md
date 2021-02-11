@@ -6,6 +6,6 @@ Jace Data Processing Service
 
 ## Учасники
 * _Бабенко Вікторія_
-*[Githab](https://github.com/vika-babenko)
-*[Telegram](https://t.me/viktoria_baben18)
+* [Githab](https://github.com/vika-babenko)
+* [Telegram](https://t.me/viktoria_baben18)
 
