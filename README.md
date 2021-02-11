@@ -5,7 +5,7 @@ Jace Data Processing Service
 Тема курсової роботи: "Підсистема документування в проекті jace-dps"
 
 ## Учасники
-* Бабенко Вікторія
-     *[Githab](https://github.com/vika-babenko)
-     *[Telegram](https://t.me/viktoria_baben18)
+* _Бабенко Вікторія_
+*[Githab](https://github.com/vika-babenko)
+*[Telegram](https://t.me/viktoria_baben18)
 
