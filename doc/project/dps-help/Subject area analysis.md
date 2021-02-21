@@ -77,7 +77,24 @@
 ``` js
 yarn global add documentation
 ```
-
-
+Потім ми можемо посилатись на документацію Documentation.js (приблизно в 5 разів швидше), щоб вказати, як парсити наші файли javascript в читабельну документацію на HTML
+``` js
+documentation build path/to/your/javascript.js -f html
+```
+Також документацію можна вивести на markdown
+```
+documentation build path/to/your/javascript.js -f md
+```
+Приємним бонусом може бути інтеграція з Flow, це значно спростить написання документації без повторного написання типів даних.
+``` js
+// @flow
+ /**
+  * Додаємо числа
+  */
+ function add(first: number, second: number): number {
+ return first + second;
+ }
+ ```
+* [DOXYOGEN](https://blog.education-ecosystem.com/10-best-code-documentation/) - 
 
 ## 4. Порівняльна характеристика існуючих засобів вирішення завдання
