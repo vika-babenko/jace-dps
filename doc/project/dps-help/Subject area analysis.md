@@ -73,5 +73,7 @@
    return first + second;
  }
  ```
-* 
+* [Documentation.js](https://webformyself.com/dokumentirovanie-proektov-javascript/) - це node-пакет, предназначенныйпризначений для аналізу JSDoc та виводу документації в в кількох різних форматах. Ми використовуємо [Markdown](https://gist.github.com/Jekins/2bf2d0638163f1294637#CodeBlocks), щоб мати можливість напряму посилатись на документацію API безпосередньо в нашому проекті, але для нас може бути більш доречно виводити документи як повністю функціонуючий веб-сайт. Наприклад:
+![IM](https://webformyself.com/wp-content/uploads/2018/193/4.png)
+
 ## 4. Порівняльна характеристика існуючих засобів вирішення завдання
